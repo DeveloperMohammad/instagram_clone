@@ -2,7 +2,7 @@
     package="com.topdevelopers.instagram">
    <application
         android:label="instagram"
-        android:name="${applicationName}"
+        android:name="Instagram"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
