@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "15939257604",
+    "project_id": "mobogram-86e63",
+    "storage_bucket": "mobogram-86e63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15939257604:android:5da69819e0a0995c0cbc51",
+        "android_client_info": {
+          "package_name": "com.example.instagram_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15939257604-gojrfcdacobr9rsf71betcedaghvhrdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZwQT-tVMX_Wg0ruqAN8NaMxoxnsFq0K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "15939257604-gojrfcdacobr9rsf71betcedaghvhrdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
