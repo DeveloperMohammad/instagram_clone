@@ -1,15 +1,15 @@
 // Dart Imports
 
 //? Third party packages
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //! User classes
-// import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/utils/colors.dart';
-// import 'package:instagram_clone/models/user.dart' as model;
+import 'package:instagram_clone/utils/global_variables.dart';
+import 'package:instagram_clone/models/user.dart' as model;
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int page = 0;
-  late PageController pageController;
+  PageController pageController = PageController();
 
   void navTapped(int pageNumber) {
     pageController.jumpToPage(pageNumber);
@@ -32,43 +32,27 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   void initState() {
-    pageController = PageController();
     super.initState();
+    pageController = PageController();
   }
 
   @override
   void dispose() {
-    pageController.dispose();
     super.dispose();
+    pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // model.User user = Provider.of<UserProvider>(context).user;
+
+    final model.User user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('user.username'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              AuthMethods().logout();
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        onPageChanged: onPageChanged,
-        children: const [
-          Center(child: Text('Home')),
-          Center(child: Text('Search')),
-          Center(child: Text('Post')),
-          Center(child: Text('Favorite')),
-          Center(child: Text('User')),
-        ],
+        onPageChanged: (number) => onPageChanged(number),
+        children: homeScreenOptions,
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: mobileBackgroundColor,
@@ -102,7 +86,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             backgroundColor: primaryColor,
           ),
         ],
-        onTap: navTapped,
+        onTap: (pageNumber) => navTapped(pageNumber),
       ),
     );
   }
