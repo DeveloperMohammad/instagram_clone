@@ -1,37 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/post_card.dart';
 
-class FeedScreen extends StatefulWidget {
+class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FeedScreen> createState() => _FeedScreenState();
-}
-
-class _FeedScreenState extends State<FeedScreen> {
-
- String description = 'No description';
-
-  getPosts() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    final data = await firestore
-        .collection('posts')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-   description = data.data()!['description'];
-  }
-
-  @override
-  void initState() {
-    getPosts();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +20,31 @@ class _FeedScreenState extends State<FeedScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.messenger_outline),
+            icon: const Icon(Icons.messenger_outline),
           ),
         ],
       ),
-      body: PostCard(description: description),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              return PostCard(
+                snap: snapshot.data!.docs[index].data(),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,7 +12,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             AuthMethods().logout();
           },
-          child: Text('Log out'),
+          child: const Text('Log out'),
         ),
       ),
     );
