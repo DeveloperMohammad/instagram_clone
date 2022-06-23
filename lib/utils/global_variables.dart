@@ -12,6 +12,6 @@ List<Widget> homeScreenOptions = [
   const FeedScreen(),
   const SearchScreen(),
   const AddPostScreen(),
-  const HomeScreen(),
+  const FavoritesScreen(),
   ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
 ];

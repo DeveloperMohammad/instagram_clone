@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
@@ -8,6 +9,7 @@ import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
@@ -19,16 +21,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController _emailController;
-  late final TextEditingController _passwordController;
+  late final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _passwordController =
+      TextEditingController();
   bool isLoading = false;
-
-  @override
-  void initState() {
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -43,7 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text;
 
     String res = await AuthMethods().login(email: email, password: password);
-    log(res);
+    print(FirebaseAuth.instance.currentUser!.uid);
+    log('Login Screen: $res');
 
     setState(() => isLoading = false);
 
@@ -75,7 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
+            padding: MediaQuery.of(context).size.width <= webScreenSize
+                ? const EdgeInsets.symmetric(horizontal: 22)
+                : EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 3,
+                  ),
             width: double.infinity,
             height: MediaQuery.of(context).size.height - 24,
             child: Column(

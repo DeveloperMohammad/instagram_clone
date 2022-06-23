@@ -38,7 +38,7 @@ class AuthMethods {
         UserCredential userCredential = await _auth
             .createUserWithEmailAndPassword(email: email, password: password);
 
-        log(userCredential.user!.uid);
+        log('Sign Up: ${userCredential.user!.uid}');
 
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePictures', file, false);
@@ -84,10 +84,8 @@ class AuthMethods {
     String res = 'an error occurred';
 
     try {
-      FirebaseAuth auth = FirebaseAuth.instance;
-
       if (email.isNotEmpty && password.isNotEmpty) {
-        await auth.signInWithEmailAndPassword(email: email, password: password);
+        await _auth.signInWithEmailAndPassword(email: email, password: password);
         res = 'success';
       } else {
         res = 'Email and Password cannot be empty';
@@ -103,8 +101,7 @@ class AuthMethods {
   }
 
   // logout
-  void logout() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.signOut();
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

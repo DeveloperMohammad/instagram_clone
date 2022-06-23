@@ -33,7 +33,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
   }
 
   @override
@@ -44,9 +43,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   Widget build(BuildContext context) {
-
-    final model.User user = Provider.of<UserProvider>(context).user;
-
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),

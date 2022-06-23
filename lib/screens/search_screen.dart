@@ -6,6 +6,7 @@ import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram_clone/utils/global_variables.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -89,13 +90,21 @@ class _SearchScreenState extends State<SearchScreen> {
                     crossAxisSpacing: 10,
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
-                      return StaggeredGridTile.extent(
-                        crossAxisCellCount: (index % 7 == 0) ? 2 : 1,
-                        mainAxisExtent: (index % 7 == 0) ? 2 : 1,
-                        child: Image.network(
-                          snapshot.data.docs[index]['postUrl'],
-                        ),
-                      );
+                      return MediaQuery.of(context).size.width > webScreenSize
+                          ? StaggeredGridTile.extent(
+                              crossAxisCellCount: (index % 7 == 0) ? 1 : 1,
+                              mainAxisExtent: (index % 7 == 0) ? 1 : 1,
+                              child: Image.network(
+                                snapshot.data.docs[index]['postUrl'],
+                              ),
+                            )
+                          : StaggeredGridTile.extent(
+                              crossAxisCellCount: (index % 7 == 0) ? 2 : 1,
+                              mainAxisExtent: (index % 7 == 0) ? 2 : 1,
+                              child: Image.network(
+                                snapshot.data.docs[index]['postUrl'],
+                              ),
+                            );
                     },
                   );
                 }

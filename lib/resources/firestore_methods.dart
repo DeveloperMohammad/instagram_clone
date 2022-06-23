@@ -172,7 +172,7 @@ class FirestoreMethods {
       DocumentSnapshot snap =
           await firestore.collection('users').doc(uid).get();
       List following =
-          (snap.data()! as dynamic)['following'].contains(followId);
+          (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {
         await firestore.collection('users').doc(followId).update({
@@ -180,7 +180,7 @@ class FirestoreMethods {
         });
 
         await firestore.collection('users').doc(uid).update({
-          'followers': FieldValue.arrayRemove([uid]),
+          'following': FieldValue.arrayRemove([followId]),
         });
       } else {
         await firestore.collection('users').doc(followId).update({
@@ -188,11 +188,11 @@ class FirestoreMethods {
         });
 
         await firestore.collection('users').doc(uid).update({
-          'followers': FieldValue.arrayUnion([uid]),
+          'following': FieldValue.arrayUnion([followId]),
         });
       }
     } catch (e) {
-      log(e.toString());
+      log('Follow method: $e');
     }
   }
 }
