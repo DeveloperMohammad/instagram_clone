@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:instagram_clone/models/comment.dart';
 import 'package:instagram_clone/models/post.dart';
 import 'package:instagram_clone/resources/storage_methods.dart';
@@ -9,6 +10,7 @@ import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   // upload post
   Future<String> uploadPost({
@@ -138,5 +140,59 @@ class FirestoreMethods {
       res = error.toString();
     }
     return res;
+  }
+
+  Future<String> deletePost({
+    required String postId,
+    required String userId,
+  }) async {
+    String res = 'An error occurred deleting the post';
+
+    try {
+      if (userId == auth.currentUser!.uid) {
+        await firestore.collection('posts').doc(postId).delete();
+      } else {
+        res = 'You are now allowed to delete others posts';
+      }
+      res = 'success';
+    } on FirebaseAuthException catch (e) {
+      res = e.code;
+    } catch (e) {
+      log(e.toString());
+      res = e.toString();
+    }
+    return res;
+  }
+
+  Future<void> followUser({
+    required String uid,
+    required String followId,
+  }) async {
+    try {
+      DocumentSnapshot snap =
+          await firestore.collection('users').doc(uid).get();
+      List following =
+          (snap.data()! as dynamic)['following'].contains(followId);
+
+      if (following.contains(followId)) {
+        await firestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayRemove([uid]),
+        });
+
+        await firestore.collection('users').doc(uid).update({
+          'followers': FieldValue.arrayRemove([uid]),
+        });
+      } else {
+        await firestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+
+        await firestore.collection('users').doc(uid).update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+      }
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }
