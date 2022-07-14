@@ -132,10 +132,11 @@ class FirestoreMethods {
             .collection('comments')
             .doc(commentId)
             .set(comment.toJson());
+
+            res = 'success';
       } else {
-        log('Text is empty');
+        res = 'Text is empty';
       }
-      res = 'success';
     } catch (error) {
       res = error.toString();
     }
@@ -151,10 +152,10 @@ class FirestoreMethods {
     try {
       if (userId == auth.currentUser!.uid) {
         await firestore.collection('posts').doc(postId).delete();
+        res = 'success';
       } else {
         res = 'You are now allowed to delete others posts';
       }
-      res = 'success';
     } on FirebaseAuthException catch (e) {
       res = e.code;
     } catch (e) {
@@ -171,8 +172,7 @@ class FirestoreMethods {
     try {
       DocumentSnapshot snap =
           await firestore.collection('users').doc(uid).get();
-      List following =
-          (snap.data()! as dynamic)['following'];
+      List following = (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {
         await firestore.collection('users').doc(followId).update({
@@ -194,5 +194,33 @@ class FirestoreMethods {
     } catch (e) {
       log('Follow method: $e');
     }
+  }
+
+  //! Delete Comment Method
+  Future<String> deleteComment({
+    required String postId,
+    required String userId,
+    required String commentId,
+  }) async {
+    String res = 'An error occurred deleting the post';
+
+    try {
+      if (userId == auth.currentUser!.uid) {
+        await firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .delete();
+        res = 'success';
+      } else {
+        res = "You are now allowed to delete others' comments";
+      }
+    } on FirebaseAuthException catch (e) {
+      res = e.code;
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 }

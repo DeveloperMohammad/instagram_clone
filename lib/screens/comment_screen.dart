@@ -133,7 +133,8 @@ class _CommentScreenState extends State<CommentScreen> {
                 ),
                 icon: isLoading
                     ? const CircularProgressIndicator()
-                    : const Icon(Icons.send),
+                    : const Text('Post',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),

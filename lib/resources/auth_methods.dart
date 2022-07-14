@@ -55,7 +55,7 @@ class AuthMethods {
         );
 
         // save user info in firestore database to later upload in profile
-        _firestore
+        await _firestore
             .collection('users')
             .doc(userCredential.user!.uid)
             .set(user.toJson());

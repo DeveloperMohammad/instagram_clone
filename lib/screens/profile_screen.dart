@@ -74,9 +74,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
 
-    print('Profile Screen: ${widget.uid}');
-    print('Current User Uid: ${FirebaseAuth.instance.currentUser!.uid}');
-
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -227,11 +224,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       itemBuilder: (context, index) {
                         DocumentSnapshot ds = snapshot.data.docs[index];
-                        return Container(
-                          child: Image.network(
-                            ds['postUrl'],
-                            fit: BoxFit.cover,
-                          ),
+                        return Image.network(
+                          ds['postUrl'],
+                          fit: BoxFit.cover,
                         );
                       },
                     );

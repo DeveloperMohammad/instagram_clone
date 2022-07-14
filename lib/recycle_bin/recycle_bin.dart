@@ -68,3 +68,71 @@
     //     ],
     //   ),
     // );
+
+
+    //! Comment List Tile
+    /*
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 18,
+        backgroundImage: NetworkImage(
+          widget.snap['profileImage'],
+        ),
+      ),
+      title: Expanded(
+        child: Row(
+          children: [
+            Text(
+              '${widget.snap['username']} ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              widget.snap['description'],
+              overflow: TextOverflow.visible,
+            ),
+          ],
+        ),
+      ),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Text(widget.snap['description']),
+          FittedBox(
+            child: Text(
+              commentDate.isBefore(
+                      DateTime.now().subtract(const Duration(days: 4)))
+                  ? DateFormat.yMMMd().format(commentDate)
+                  : timeago.format(commentDate, locale: 'en_short'),
+            ),
+          ),
+
+          FittedBox(child: Text('${widget.snap['likes'].length} likes')),
+
+          IconButton(
+            onPressed: () {
+              deleteComment();
+            },
+            icon: const FittedBox(child: Text('delete')),
+          ),
+
+          const SizedBox(width: 20),
+        ],
+      ),
+      trailing: LikeAnimation(
+        isAnimating: widget.snap['likes'].contains(user.uid),
+        child: IconButton(
+          onPressed: () {
+            FirestoreMethods().likeComment(
+              commentId: widget.snap['commentId'],
+              postId: widget.snap['postId'],
+              uid: user.uid,
+              likes: widget.snap['likes'],
+            );
+          },
+          icon: widget.snap['likes'].contains(user.uid)
+              ? const Icon(Icons.favorite, color: Colors.red)
+              : const Icon(Icons.favorite_border),
+        ),
+      ),
+    );
+    */
